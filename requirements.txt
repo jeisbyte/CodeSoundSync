@@ -1,0 +1,4 @@
+# Core, GUI, and Widgets modules used by the desktop UI (no unused Qt add-ons).
+PySide6-Essentials>=6.7.0
+pytest>=8.3.0
+pytest-qt>=4.4.0
