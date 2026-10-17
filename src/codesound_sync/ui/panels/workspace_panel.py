@@ -35,6 +35,13 @@ class WorkspacePanel(QWidget):
         self._preview.setText(f"Video selected\n\n{path.name}\n\nPreview playback is not part of Stage 1.")
         self._path.setText(str(path))
 
+    def set_missing_video(self, path: Path) -> None:
+        self._preview.setText(
+            f"Source video missing\n\n{path.name}\n\n"
+            "The saved project information is still available."
+        )
+        self._path.setText(str(path))
+
     def clear(self) -> None:
         self._preview.setText("Import a video to begin")
         self._path.setText("No video selected")

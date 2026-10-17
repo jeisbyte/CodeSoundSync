@@ -64,13 +64,37 @@ class Project:
 
     @classmethod
     def from_dict(cls, data: dict) -> "Project":
+        if not isinstance(data, dict):
+            raise ValueError("Project data must be a JSON object.")
+
+        name = data.get("name")
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("Project name must be a non-empty string.")
+
+        for key in ("source_video", "output_dir"):
+            value = data.get(key)
+            if value is not None and (not isinstance(value, str) or not value):
+                raise ValueError(f"Project {key} must be a path string or null.")
+
+        project_id = data.get("project_id", str(uuid.uuid4()))
+        if not isinstance(project_id, str) or not project_id.strip():
+            raise ValueError("Project ID must be a non-empty string.")
+
+        for key in ("created_at", "modified_at"):
+            if key in data and not isinstance(data[key], str):
+                raise ValueError(f"Project {key} must be a string.")
+
         media_raw = data.get("media_info")
+        if media_raw is not None and not isinstance(media_raw, dict):
+            raise ValueError("Project media information must be an object or null.")
+        media_info = MediaInfo.from_dict(media_raw) if media_raw is not None else None
+
         return cls(
-            name=data["name"],
+            name=name,
             source_video=Path(data["source_video"]) if data.get("source_video") else None,
             output_dir=Path(data["output_dir"]) if data.get("output_dir") else None,
-            media_info=MediaInfo.from_dict(media_raw) if media_raw else None,
-            project_id=data.get("project_id", str(uuid.uuid4())),
+            media_info=media_info,
+            project_id=project_id,
             created_at=data.get("created_at", _utcnow_iso()),
             modified_at=data.get("modified_at", _utcnow_iso()),
         )

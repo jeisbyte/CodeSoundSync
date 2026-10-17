@@ -39,6 +39,8 @@ APP_ORG = "CodeSoundSync"
 # ---------------------------------------------------------------------------
 FFMPEG_TIMEOUT_SECONDS: int = 60
 FFPROBE_TIMEOUT_SECONDS: int = 30
+AUDIO_SAMPLE_RATE: int = 44_100
+ACTIVITY_SAMPLE_INTERVAL_SECONDS: float = 0.5
 
 # ---------------------------------------------------------------------------
 # UI
